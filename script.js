@@ -567,3 +567,54 @@ function startQuiz() {
 }
 
 loadQuestion();
+
+/* =========================================================
+   LIVE NEPAL DATE & TIME
+   ========================================================= */
+function updateNepalClock() {
+    const now = new Date();
+    const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Kathmandu",
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+    }).formatToParts(now);
+
+    const get = type => parts.find(p => p.type === type)?.value || "";
+    const time = `${get("hour")}:${get("minute")}:${get("second")} ${get("dayPeriod")}`;
+    const date = `${get("weekday")}, ${get("month")} ${get("day")}, ${get("year")}`;
+
+    const liveTime = document.getElementById("liveTime");
+    const liveDate = document.getElementById("liveDate");
+    const heroTime = document.getElementById("heroTime");
+
+    if (liveTime) liveTime.textContent = time;
+    if (liveDate) liveDate.textContent = date;
+    if (heroTime) heroTime.textContent = time;
+}
+updateNepalClock();
+setInterval(updateNepalClock, 1000);
+
+/* Back-to-top button */
+const backTop = document.getElementById("backTop");
+window.addEventListener("scroll", () => {
+    if (!backTop) return;
+    backTop.classList.toggle("show", window.scrollY > 500);
+});
+if (backTop) {
+    backTop.addEventListener("click", () => window.scrollTo({top: 0, behavior: "smooth"}));
+}
+
+/* Add a small analytics event when the user starts the quiz */
+const originalStartQuiz = window.startQuiz;
+window.startQuiz = function () {
+    if (typeof gtag === "function") {
+        gtag("event", "quiz_started", {total_questions: questions.length});
+    }
+    if (originalStartQuiz) originalStartQuiz();
+};

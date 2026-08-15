@@ -21,18 +21,23 @@
 
 <header>
     <nav class="navbar">
-        <div class="logo">🇳🇵 Lok Sewa Prep</div>
+        <div class="logo"><span class="logo-mark">🇳🇵</span><span>Lok Sewa Prep</span></div>
+        <div class="live-clock" aria-live="polite">
+            <strong id="liveTime">--:--:--</strong>
+            <small id="liveDate">लोड हुँदैछ...</small>
+        </div>
         <div class="nav-links">
             <a href="#home">Home</a>
             <a href="#subjects">Subjects</a>
             <a href="#mcq">MCQ</a>
             <a href="#constitution">संविधान</a>
-            <a href="#notices">Notices</a>
         </div>
     </nav>
 </header>
 
 <section id="home" class="hero">
+    <div class="floating-orb orb-one"></div>
+    <div class="floating-orb orb-two"></div>
     <div class="hero-content">
         <p class="tagline">🇳🇵 Prepare Smart. Serve Nepal.</p>
         <h1>Your Complete <span>Lok Sewa</span> Preparation Platform</h1>
@@ -226,6 +231,14 @@
     <p class="section-subtitle">लोकसेवा तयारीका लागि नियमित अभ्यास गर्दै जानुहोस्। नयाँ MCQ र अध्ययन सामग्री थपिँदै जानेछन्।</p>
 </section>
 
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+    <a href="#home"><span>⌂</span><small>Home</small></a>
+    <a href="#subjects"><span>📚</span><small>Subjects</small></a>
+    <a href="#mcq" class="nav-main"><span>📝</span><small>MCQ</small></a>
+    <a href="#constitution"><span>🇳🇵</span><small>संविधान</small></a>
+    <a href="#notices"><span>🔔</span><small>Notice</small></a>
+</nav>
+
 <footer>
     <h3>🇳🇵 Lok Sewa Prep Nepal</h3>
     <p>Prepare Smart. Serve Nepal.</p>
@@ -233,5 +246,6 @@
 </footer>
 
 <script src="script.js"></script>
+<button id="backTop" class="back-top" aria-label="माथि जानुहोस्">↑</button>
 </body>
 </html>
