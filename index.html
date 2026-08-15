@@ -1,71 +1,102 @@
 <!DOCTYPE html>
 <html lang="ne">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="लोकसेवा तयारीका लागि २० वटा नेपाली MCQ प्रश्न">
-  <title>लोकसेवा तयारी नेपाल — २० MCQ Quiz</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="लोकसेवा तयारीका लागि नेपाली MCQ, विषयगत अभ्यास र अध्ययन सामग्री">
+    <title>Lok Sewa Prep Nepal</title>
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-80KG9XNZNC"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-80KG9XNZNC');
-  </script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-80KG9XNZNC"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-80KG9XNZNC');
+    </script>
 
-  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">🇳🇵 लोकसेवा तयारी नेपाल</div>
-    <div class="badge">२० MCQ</div>
-  </header>
 
-  <main class="container">
-    <section class="hero">
-      <p class="eyebrow">आजको अभ्यास</p>
-      <h1>लोकसेवा सामान्य ज्ञान MCQ</h1>
-      <p>२० प्रश्न हल गर्नुहोस् र अन्त्यमा आफ्नो स्कोर हेर्नुहोस्।</p>
-    </section>
+<header>
+    <nav class="navbar">
+        <div class="logo">🇳🇵 Lok Sewa Prep</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#subjects">Subjects</a>
+            <a href="#mcq">MCQ</a>
+            <a href="#notices">Notices</a>
+        </div>
+    </nav>
+</header>
 
-    <section class="quiz-card" id="quizCard">
-      <div class="quiz-top">
-        <span id="questionNumber">प्रश्न १ / २०</span>
-        <span id="scoreText">स्कोर: ०</span>
-      </div>
+<section id="home" class="hero">
+    <div class="hero-content">
+        <p class="tagline">🇳🇵 Prepare Smart. Serve Nepal.</p>
+        <h1>Your Complete <span>Lok Sewa</span> Preparation Platform</h1>
+        <p>Practice MCQs, take mock tests, study important topics and stay updated with Lok Sewa information.</p>
+        <div class="hero-buttons">
+            <button onclick="startQuiz()">Start MCQ Practice</button>
+            <button class="secondary-btn" onclick="document.getElementById('subjects').scrollIntoView({behavior:'smooth'})">Explore Syllabus</button>
+        </div>
+    </div>
+</section>
 
-      <div class="progress">
-        <div id="progressBar"></div>
-      </div>
+<section class="features">
+    <div class="feature-card"><div class="icon">📝</div><h3>MCQ Practice</h3><p>Practice important Lok Sewa questions.</p></div>
+    <div class="feature-card"><div class="icon">⏱️</div><h3>Mock Tests</h3><p>Test your preparation with timed exams.</p></div>
+    <div class="feature-card"><div class="icon">📰</div><h3>Current Affairs</h3><p>Stay updated with important events.</p></div>
+    <div class="feature-card"><div class="icon">📚</div><h3>Study Materials</h3><p>Access useful preparation materials.</p></div>
+</section>
 
-      <h2 id="question">प्रश्न लोड हुँदैछ...</h2>
-      <div id="options" class="options"></div>
+<section id="subjects" class="section">
+    <h2>Popular Subjects</h2>
+    <p class="section-subtitle">Choose a subject and start preparing.</p>
+    <div class="subject-grid">
+        <div class="subject-card"><span>🇳🇵</span><h3>General Knowledge</h3><p>Important GK questions</p></div>
+        <div class="subject-card"><span>📜</span><h3>Constitution</h3><p>Constitution of Nepal</p></div>
+        <div class="subject-card"><span>🌎</span><h3>Current Affairs</h3><p>National & international affairs</p></div>
+        <div class="subject-card"><span>💻</span><h3>Computer</h3><p>Computer fundamentals</p></div>
+    </div>
+</section>
 
-      <div id="feedback" class="feedback hidden"></div>
+<section id="mcq" class="quiz-section">
+    <h2>🔥 Today's MCQ Practice</h2>
+    <p class="quiz-subtitle">अब ४१ वटा प्रश्न अभ्यास गर्नुहोस् — सही उत्तरपछि व्याख्या पनि हेर्नुहोस्।</p>
 
-      <button id="nextBtn" class="next-btn" disabled>अर्को प्रश्न →</button>
-    </section>
+    <div class="quiz-box" id="quizCard">
+        <div class="quiz-top">
+            <span id="questionNumber">प्रश्न १ / ४१</span>
+            <span id="scoreText">स्कोर: ०</span>
+        </div>
+        <div class="progress"><div id="progressBar"></div></div>
+        <p class="question" id="question">प्रश्न लोड हुँदैछ...</p>
+        <div id="options"></div>
+        <div id="feedback" class="feedback hidden"></div>
+        <button id="nextBtn" class="next-question" disabled>अर्को प्रश्न →</button>
+    </div>
 
-    <section id="resultCard" class="result-card hidden">
-      <div class="result-icon">🎉</div>
-      <p class="eyebrow">क्विज सम्पन्न</p>
-      <h2>तपाईंको नतिजा</h2>
-      <div class="final-score" id="finalScore">० / २०</div>
-      <p id="resultMessage"></p>
-      <button id="restartBtn" class="next-btn">फेरि सुरु गर्नुहोस्</button>
-    </section>
+    <div class="quiz-box result-box hidden" id="resultCard">
+        <div class="result-icon">🎉</div>
+        <h2>तपाईंको नतिजा</h2>
+        <div class="final-score" id="finalScore">० / ४१</div>
+        <p id="resultMessage"></p>
+        <button class="next-question" id="restartBtn">फेरि सुरु गर्नुहोस्</button>
+    </div>
+</section>
 
-    <section class="notice">
-      <strong>📚 टिप:</strong> गलत भएका प्रश्नहरू फेरि पढेर आफ्नो नोटमा लेख्नुहोस्।
-    </section>
-  </main>
+<section id="notices" class="section notices">
+    <h2>📢 Notices</h2>
+    <p class="section-subtitle">लोकसेवा तयारीका लागि नियमित अभ्यास गर्दै जानुहोस्। नयाँ MCQ र अध्ययन सामग्री थपिँदै जानेछन्।</p>
+</section>
 
-  <footer>
-    © 2026 लोकसेवा तयारी नेपाल · नियमित अभ्यास, राम्रो परिणाम 🇳🇵
-  </footer>
+<footer>
+    <h3>🇳🇵 Lok Sewa Prep Nepal</h3>
+    <p>Prepare Smart. Serve Nepal.</p>
+    <p class="copyright">© 2026 Lok Sewa Prep Nepal</p>
+</footer>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
