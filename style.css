@@ -25,3 +25,31 @@ button:hover{transform:translateY(-1px);filter:brightness(.96)}.secondary-btn{ba
 footer{background:#172033;color:#fff;text-align:center;padding:50px 20px}footer p{margin-top:10px;color:#cbd1dc}.copyright{margin-top:30px}
 @media(max-width:800px){.nav-links{display:none}.hero h1{font-size:38px}.features{grid-template-columns:repeat(2,1fr)}.subject-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:500px){.features,.subject-grid{grid-template-columns:1fr}.hero h1{font-size:32px}.quiz-box{padding:22px}.question{font-size:18px}}
+
+/* Constitution section */
+.constitution-section{background:#f8fafc;padding:85px 20px}
+.constitution-container{max-width:1100px;margin:auto}
+.constitution-heading{text-align:center;max-width:850px;margin:0 auto 35px}
+.constitution-badge{display:inline-block;background:#fff1f2;color:#b91c1c;padding:8px 15px;border-radius:999px;font-weight:800;margin-bottom:14px}
+.constitution-heading h2{font-size:40px;margin-bottom:12px}
+.constitution-heading p{color:#667085;line-height:1.8;font-size:17px}
+.constitution-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:30px 0}
+.constitution-stats div{background:#fff;border-radius:15px;padding:22px;text-align:center;box-shadow:0 6px 25px rgba(0,0,0,.06)}
+.constitution-stats strong{display:block;font-size:30px;color:#b91c1c}.constitution-stats span{display:block;color:#667085;margin-top:5px}
+.constitution-actions{text-align:center;margin:25px 0 40px}
+.constitution-btn{display:inline-block;text-decoration:none;padding:14px 20px;border-radius:9px;font-weight:800;margin:5px}
+.constitution-btn.primary{background:#b91c1c;color:#fff}.constitution-btn.secondary{background:#172033;color:#fff}
+.constitution-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.constitution-card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 7px 28px rgba(0,0,0,.06)}
+.constitution-card.wide{grid-column:1/-1}.constitution-card.highlight{border-top:4px solid #b91c1c}
+.constitution-card h3{font-size:22px;margin-bottom:18px}
+.constitution-card ul{padding-left:20px;line-height:1.9;color:#465064}
+.constitution-card li{margin-bottom:4px}
+.parts-grid,.schedule-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.parts-grid span,.schedule-grid span{background:#f6f7fb;padding:11px 13px;border-radius:9px;line-height:1.5}
+.quick-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.quick-facts div{background:#f8fafc;padding:16px;border-radius:10px}
+.quick-facts b{display:block;color:#b91c1c}.quick-facts span{display:block;margin-top:5px;color:#667085}
+.official-source{text-align:center;margin-top:30px;color:#667085}.official-source a{color:#b91c1c;font-weight:800;text-decoration:none}
+@media(max-width:800px){.constitution-stats{grid-template-columns:repeat(2,1fr)}.constitution-grid{grid-template-columns:1fr}.constitution-card.wide{grid-column:auto}.parts-grid,.schedule-grid{grid-template-columns:1fr}.quick-facts{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.constitution-heading h2{font-size:30px}.quick-facts{grid-template-columns:1fr}.constitution-actions a{display:block}.constitution-stats strong{font-size:25px}}
