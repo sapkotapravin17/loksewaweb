@@ -618,3 +618,53 @@ window.startQuiz = function () {
     }
     if (originalStartQuiz) originalStartQuiz();
 };
+
+/* =========================================================
+   OFFICIAL-STYLE MODEL QUESTIONS
+   Based on the PSC-published sample-question pattern.
+   Questions below are paraphrased for practice, not copied
+   verbatim from the official publication.
+   ========================================================= */
+const modelQuestions = [
+  {q:"Trade winds सामान्यतया कुन क्षेत्रमा बहन्छन्?",o:["ध्रुवीय क्षेत्र","उष्णकटिबन्ध र भूमध्यरेखाबीच","केवल युरोपमा","केवल केप अफ गुड होपमा"],tag:"भूगोल"},
+  {q:"कुन विकल्प औद्योगिक क्रान्तिको सुरुआत भएको देशसँग सम्बन्धित छ?",o:["इटाली","बेलायत","नेपाल","जापान"],tag:"इतिहास"},
+  {q:"नेपालको संविधान २०७२ को मौलिक हकसम्बन्धी व्यवस्था कुन भागमा छ?",o:["भाग १","भाग २","भाग ३","भाग ५"],tag:"संविधान"},
+  {q:"स्थानीय समय र GMT बीचको फरकबाट के पत्ता लगाउन सकिन्छ?",o:["अक्षांश","देशान्तर","उचाइ","तापक्रम"],tag:"भूगोल"},
+  {q:"लोक सेवा आयोगको सामान्य सचेतना नमूना प्रश्नमा कुन प्रकारका प्रश्न समावेश हुन सक्छन्?",o:["केवल निबन्ध","सामान्य बहुवैकल्पिक र तर्क/जोडी मिलाउने प्रकार","केवल मौखिक","केवल प्रयोगात्मक"],tag:"लोकसेवा"},
+  {q:"भगवान बुद्धका चार आर्य सत्यमध्ये दुःखको कारणलाई के भनिन्छ?",o:["समुदय","निरोध","मार्ग","निर्वाण"],tag:"संस्कृति"},
+  {q:"'New World' भन्ने भौगोलिक उपनाम कुन महादेशसँग बढी सम्बन्धित छ?",o:["उत्तर अमेरिका","एशिया","युरोप","अष्ट्रेलिया"],tag:"भूगोल"},
+  {q:"'Continent of Extremes' भनेर कुन महादेशलाई चिनिन्छ?",o:["अफ्रिका","एशिया","अष्ट्रेलिया","युरोप"],tag:"भूगोल"},
+  {q:"लोकसेवा प्रथम पत्रको सामान्य सचेतनामा समसामयिक घटना कुन क्षेत्रभित्र पर्छ?",o:["राष्ट्रिय तथा अन्तर्राष्ट्रिय समसामयिक गतिविधि","केवल गणित","केवल व्याकरण","केवल कम्प्युटर कोड"],tag:"समसामयिक"},
+  {q:"नेपालको संविधानसम्बन्धी प्रश्नमा अनुसूची र धाराबीचको सम्बन्ध बुझ्नु किन महत्वपूर्ण हुन्छ?",o:["कानूनी व्यवस्था र अधिकारको स्रोत पहिचान गर्न","केवल इतिहास सम्झन","केवल भाषा सिक्न","केवल भूगोल पढ्न"],tag:"संविधान"}
+];
+
+const modelGrid = document.getElementById("modelQuestionGrid");
+const showModelBtn = document.getElementById("showModelBtn");
+
+function renderModelQuestions(showAll=false){
+  if(!modelGrid) return;
+  modelGrid.innerHTML = "";
+  modelQuestions.forEach((item,i)=>{
+    const card=document.createElement("article");
+    card.className="model-card" + (!showAll && i>=4 ? " hidden-model" : "");
+    card.innerHTML = `
+      <div class="model-number">${i+1}</div>
+      <div class="model-question">${item.q}</div>
+      <div class="model-options">
+        ${item.o.map((x,j)=>`<div class="model-option">${String.fromCharCode(65+j)}. ${x}</div>`).join("")}
+      </div>
+      <span class="model-tag">🎯 ${item.tag}</span>
+    `;
+    modelGrid.appendChild(card);
+  });
+  if(showModelBtn) showModelBtn.textContent = showAll ? "➖ कम देखाउनुहोस्" : "➕ सबै मोडल प्रश्न हेर्नुहोस्";
+}
+renderModelQuestions(false);
+
+if(showModelBtn){
+  let all=false;
+  showModelBtn.addEventListener("click",()=>{
+    all=!all;
+    renderModelQuestions(all);
+  });
+}
