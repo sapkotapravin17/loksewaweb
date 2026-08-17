@@ -385,7 +385,7 @@ body{
   .mobile-bottom-nav{
     position:fixed;
     display:grid;
-    grid-template-columns:repeat(5,1fr);
+    grid-template-columns:repeat(6,1fr);
     left:10px;
     right:10px;
     bottom:10px;
@@ -509,4 +509,41 @@ body{
   .model-card{padding:17px;border-radius:15px}
   .model-question{font-size:15px}
   .model-option{font-size:12px}
+}
+
+/* =========================================================
+   STUDY TRACKER
+   ========================================================= */
+.tracker-section{padding:85px 20px;background:linear-gradient(135deg,#f0fdf4,#f8fafc 50%,#eef4ff)}
+.tracker-container{max-width:1100px;margin:auto}
+.tracker-heading{display:flex;align-items:center;gap:18px;margin-bottom:28px}
+.tracker-icon{width:68px;height:68px;display:grid;place-items:center;border-radius:20px;font-size:34px;background:linear-gradient(135deg,#16a34a,#2563eb);box-shadow:0 12px 28px rgba(37,99,235,.2);animation:trackerFloat 3s ease-in-out infinite}
+.tracker-badge{font-size:11px;font-weight:900;letter-spacing:.7px;color:#166534;background:#dcfce7;padding:7px 11px;border-radius:999px}
+.tracker-heading h2{font-size:36px;margin:10px 0 7px}.tracker-heading p{color:#667085;line-height:1.7}
+.tracker-dashboard{display:grid;grid-template-columns:1.3fr .85fr .85fr;gap:16px}
+.tracker-card{background:rgba(255,255,255,.9);border:1px solid #e5e7eb;border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(15,23,42,.07)}
+.tracker-card-title{display:flex;align-items:center;gap:8px;font-size:16px}.tracker-card-title span{font-size:22px}
+.goal-ring{width:135px;height:135px;border-radius:50%;margin:18px auto;display:grid;place-items:center;background:conic-gradient(#16a34a 0deg,#16a34a 0deg,#e5e7eb 0deg);position:relative}
+.goal-ring:after{content:"";position:absolute;width:105px;height:105px;background:#fff;border-radius:50%}
+.goal-ring>div{position:relative;z-index:1;text-align:center}.goal-ring strong{display:block;font-size:26px;color:#166534}.goal-ring small{color:#667085}
+.goal-text{text-align:center;font-size:16px;margin-bottom:12px}.goal-text strong{font-size:23px;color:#166534}
+.tracker-progress{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden}.tracker-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#16a34a,#22c55e);border-radius:inherit;transition:width .7s ease}.tracker-progress.blue span{background:linear-gradient(90deg,#2563eb,#7c3aed)}
+.tracker-controls{display:flex;gap:7px;margin-top:14px}.tracker-controls input,.goal-setting input{min-width:0;border:1px solid #d0d5dd;border-radius:9px;padding:10px;background:#fff}
+.tracker-controls input{flex:1}.tracker-controls button,.goal-setting button{background:#166534;padding:10px 12px;font-size:13px}
+.goal-setting{display:flex;align-items:center;gap:7px;margin-top:10px;font-size:12px;color:#667085}.goal-setting input{width:70px;padding:7px}.goal-setting button{padding:7px 10px}
+.streak-card{text-align:center}.streak-number{font-size:60px;font-weight:900;color:#f97316;line-height:1;margin:30px 0 5px}.streak-card p{color:#667085}
+.mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:28px}.mini-stats div{background:#f8fafc;padding:12px;border-radius:10px}.mini-stats strong{display:block;font-size:20px}.mini-stats span{font-size:10px;color:#667085}
+.stats-card small{display:block;color:#667085;line-height:1.6;margin-top:14px}.stat-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #eef2f6;font-size:13px}.stat-row strong{color:#2563eb}
+.weekly-card,.subjects-tracker,.motivation-card{margin-top:16px}.weekly-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}.weekly-head>div{display:flex;align-items:center;gap:9px}.weekly-head>span{color:#166534;font-weight:900}.section-mini-icon{font-size:22px}
+.week-chart{height:180px;display:grid;grid-template-columns:repeat(7,1fr);align-items:end;gap:10px;border-bottom:1px solid #e5e7eb;padding:10px 0 0}
+.day-bar{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px}.day-bar .bar{width:min(35px,70%);height:10%;min-height:4px;border-radius:8px 8px 2px 2px;background:linear-gradient(180deg,#2563eb,#7c3aed);transition:height .7s ease}.day-bar small{font-size:10px;color:#667085}.day-bar strong{font-size:9px;color:#344054}
+.subject-progress-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.subject-progress{position:relative}.subject-progress>span{font-size:13px}.subject-progress>input{float:right;width:55px;border:1px solid #d0d5dd;border-radius:6px;padding:4px;text-align:right;font-size:11px}.subject-progress>strong{float:right;margin-right:7px;font-size:12px;color:#2563eb}.subject-progress>div{clear:both;margin-top:9px;height:7px;background:#e5e7eb;border-radius:99px;overflow:hidden}.subject-progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,#16a34a,#2563eb);transition:width .5s ease}
+.reset-btn{background:#fff1f2;color:#b91c1c;padding:7px 11px;font-size:11px;margin:0}
+.motivation-card{display:flex;align-items:center;gap:15px;background:linear-gradient(135deg,#fff7ed,#fff);border-color:#fed7aa}.motivation-card>span{font-size:40px}.motivation-card strong{font-size:17px}.motivation-card p{margin-top:4px;color:#667085;font-size:13px}
+@keyframes trackerFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-6px) rotate(2deg)}}
+@media(max-width:800px){
+ .tracker-section{padding:60px 13px}.tracker-heading{align-items:flex-start;gap:12px}.tracker-icon{width:54px;height:54px;font-size:27px;border-radius:16px}.tracker-heading h2{font-size:27px}.tracker-heading p{font-size:13px}
+ .tracker-dashboard{grid-template-columns:1fr;gap:12px}.tracker-card{padding:18px;border-radius:16px}.goal-ring{width:125px;height:125px}.goal-ring:after{width:97px;height:97px}
+ .subject-progress-grid{grid-template-columns:1fr;gap:14px}.week-chart{height:155px;gap:5px}
+ .day-bar .bar{width:24px}.day-bar small{font-size:9px}
 }

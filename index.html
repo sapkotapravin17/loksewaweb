@@ -32,6 +32,7 @@
             <a href="#mcq">MCQ</a>
             <a href="#constitution">संविधान</a>
             <a href="#model-questions">Model</a>
+            <a href="#study-tracker">Tracker</a>
         </div>
     </nav>
 </header>
@@ -255,6 +256,85 @@
   </div>
 </section>
 
+
+<section id="study-tracker" class="tracker-section">
+  <div class="tracker-container">
+    <div class="tracker-heading">
+      <div class="tracker-icon">📊</div>
+      <div>
+        <span class="tracker-badge">MY PREPARATION</span>
+        <h2>Study Tracker</h2>
+        <p>तपाईंको दैनिक लोकसेवा तयारी, अध्ययन समय र प्रगति एउटै dashboard मा ट्र्याक गर्नुहोस्।</p>
+      </div>
+    </div>
+
+    <div class="tracker-dashboard">
+      <div class="tracker-card today-card">
+        <div class="tracker-card-title"><span>🎯</span><strong>आजको लक्ष्य</strong></div>
+        <div class="goal-ring"><div><strong id="goalPercent">0%</strong><small>पूरा</small></div></div>
+        <div class="goal-text"><strong id="todayHours">0.0</strong> / <span id="goalHoursText">10</span> घण्टा</div>
+        <div class="tracker-progress"><span id="goalProgress"></span></div>
+        <div class="tracker-controls">
+          <input id="studyHoursInput" type="number" min="0" max="24" step="0.25" placeholder="आज पढेको घण्टा">
+          <button id="addStudyBtn">+ थप्नुहोस्</button>
+        </div>
+        <div class="goal-setting">
+          <label>दैनिक लक्ष्य</label>
+          <input id="dailyGoalInput" type="number" min="1" max="24" step="0.5" value="10">
+          <button id="saveGoalBtn">सेभ</button>
+        </div>
+      </div>
+
+      <div class="tracker-card streak-card">
+        <div class="tracker-card-title"><span>🔥</span><strong>Study Streak</strong></div>
+        <div class="streak-number" id="streakNumber">0</div>
+        <p>लगातार अध्ययन दिन</p>
+        <div class="mini-stats">
+          <div><strong id="bestStreak">0</strong><span>Best streak</span></div>
+          <div><strong id="totalHours">0.0</strong><span>Total hours</span></div>
+        </div>
+      </div>
+
+      <div class="tracker-card stats-card">
+        <div class="tracker-card-title"><span>📝</span><strong>MCQ Progress</strong></div>
+        <div class="stat-row"><span>अभ्यास गरिएको</span><strong id="mcqAttempted">0</strong></div>
+        <div class="stat-row"><span>सही उत्तर</span><strong id="mcqCorrect">0</strong></div>
+        <div class="stat-row"><span>Accuracy</span><strong id="mcqAccuracy">0%</strong></div>
+        <div class="tracker-progress blue"><span id="accuracyBar"></span></div>
+        <small>तपाईंको MCQ परिणामहरू यही browser मा सुरक्षित हुन्छन्।</small>
+      </div>
+    </div>
+
+    <div class="tracker-card weekly-card">
+      <div class="weekly-head">
+        <div><span class="section-mini-icon">📈</span><strong>७ दिनको अध्ययन प्रगति</strong></div>
+        <span id="weeklyTotal">0 घण्टा</span>
+      </div>
+      <div class="week-chart" id="weekChart"></div>
+    </div>
+
+    <div class="tracker-card subjects-tracker">
+      <div class="weekly-head">
+        <div><span class="section-mini-icon">📚</span><strong>विषयगत प्रगति</strong></div>
+        <button id="resetTrackerBtn" class="reset-btn">Reset</button>
+      </div>
+      <div class="subject-progress-grid">
+        <div class="subject-progress"><span>सामान्य ज्ञान</span><input type="number" min="0" max="100" value="0" data-subject="gk"><strong>0%</strong><div><i></i></div></div>
+        <div class="subject-progress"><span>संविधान</span><input type="number" min="0" max="100" value="0" data-subject="constitution"><strong>0%</strong><div><i></i></div></div>
+        <div class="subject-progress"><span>समसामयिक</span><input type="number" min="0" max="100" value="0" data-subject="current"><strong>0%</strong><div><i></i></div></div>
+        <div class="subject-progress"><span>कम्प्युटर</span><input type="number" min="0" max="100" value="0" data-subject="computer"><strong>0%</strong><div><i></i></div></div>
+        <div class="subject-progress"><span>इतिहास</span><input type="number" min="0" max="100" value="0" data-subject="history"><strong>0%</strong><div><i></i></div></div>
+        <div class="subject-progress"><span>भूगोल</span><input type="number" min="0" max="100" value="0" data-subject="geography"><strong>0%</strong><div><i></i></div></div>
+      </div>
+    </div>
+
+    <div class="tracker-card motivation-card">
+      <span>🏆</span>
+      <div><strong id="motivationTitle">आजबाट सुरु गरौं!</strong><p id="motivationText">सानो progress पनि ठूलो लक्ष्यतर्फको कदम हो।</p></div>
+    </div>
+  </div>
+</section>
+
 <section id="notices" class="section notices">
     <h2>📢 Notices</h2>
     <p class="section-subtitle">लोकसेवा तयारीका लागि नियमित अभ्यास गर्दै जानुहोस्। नयाँ MCQ र अध्ययन सामग्री थपिँदै जानेछन्।</p>
@@ -266,6 +346,7 @@
     <a href="#mcq" class="nav-main"><span>📝</span><small>MCQ</small></a>
     <a href="#constitution"><span>🇳🇵</span><small>संविधान</small></a>
     <a href="#model-questions"><span>🎯</span><small>Model</small></a>
+    <a href="#study-tracker"><span>📊</span><small>Tracker</small></a>
 </nav>
 
 <footer>

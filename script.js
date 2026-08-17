@@ -668,3 +668,139 @@ if(showModelBtn){
     renderModelQuestions(all);
   });
 }
+
+/* =========================================================
+   STUDY TRACKER
+   Saves locally in the user's browser.
+   ========================================================= */
+const TRACKER_KEY = "loksewaStudyTrackerV1";
+const todayKey = () => new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Kathmandu"}).format(new Date());
+
+function defaultTracker(){
+  return {goal:10, days:{}, subjects:{gk:0,constitution:0,current:0,computer:0,history:0,geography:0}, mcqAttempted:0, mcqCorrect:0};
+}
+function getTracker(){
+  try { return {...defaultTracker(),...JSON.parse(localStorage.getItem(TRACKER_KEY)||"{}")}; }
+  catch(e){ return defaultTracker(); }
+}
+function saveTracker(t){ localStorage.setItem(TRACKER_KEY,JSON.stringify(t)); }
+
+let tracker = getTracker();
+
+function updateTrackerUI(){
+  const today=todayKey();
+  const hours=Number(tracker.days?.[today]||0);
+  const goal=Number(tracker.goal||10);
+  const pct=Math.min(100,Math.round((hours/goal)*100));
+
+  const todayHours=document.getElementById("todayHours");
+  const goalHoursText=document.getElementById("goalHoursText");
+  const goalPercent=document.getElementById("goalPercent");
+  const goalProgress=document.getElementById("goalProgress");
+  const goalRing=document.querySelector(".goal-ring");
+  if(todayHours) todayHours.textContent=hours.toFixed(1);
+  if(goalHoursText) goalHoursText.textContent=goal;
+  if(goalPercent) goalPercent.textContent=pct+"%";
+  if(goalProgress) goalProgress.style.width=pct+"%";
+  if(goalRing) goalRing.style.background=`conic-gradient(#16a34a ${pct*3.6}deg,#e5e7eb ${pct*3.6}deg)`;
+
+  const total=Object.values(tracker.days||{}).reduce((a,b)=>a+Number(b||0),0);
+  const totalEl=document.getElementById("totalHours");
+  if(totalEl) totalEl.textContent=total.toFixed(1);
+
+  const streak=calculateStreak();
+  const best=calculateBestStreak();
+  const st=document.getElementById("streakNumber"), bs=document.getElementById("bestStreak");
+  if(st) st.textContent=streak;
+  if(bs) bs.textContent=best;
+
+  const attempted=Number(tracker.mcqAttempted||0), correct=Number(tracker.mcqCorrect||0);
+  const accuracy=attempted?Math.round(correct/attempted*100):0;
+  const a=document.getElementById("mcqAttempted"), c=document.getElementById("mcqCorrect"), ac=document.getElementById("mcqAccuracy"), ab=document.getElementById("accuracyBar");
+  if(a)a.textContent=attempted;if(c)c.textContent=correct;if(ac)ac.textContent=accuracy+"%";if(ab)ab.style.width=accuracy+"%";
+
+  const goalInput=document.getElementById("dailyGoalInput"); if(goalInput) goalInput.value=goal;
+  renderWeekChart();
+  renderSubjects();
+  updateMotivation(pct,streak);
+}
+
+function dateOffset(days){
+  const d=new Date(); d.setDate(d.getDate()+days);
+  return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Kathmandu"}).format(d);
+}
+function calculateStreak(){
+  let s=0, d=0;
+  while(true){ const k=dateOffset(-d); if(Number(tracker.days?.[k]||0)>0){s++;d++;}else break; }
+  return s;
+}
+function calculateBestStreak(){
+  const keys=Object.keys(tracker.days||{}).filter(k=>Number(tracker.days[k])>0).sort();
+  let best=0,cur=0,last=null;
+  for(const k of keys){
+    if(last){
+      const a=new Date(last+"T00:00:00"),b=new Date(k+"T00:00:00");
+      const diff=Math.round((b-a)/86400000);
+      cur=diff===1?cur+1:1;
+    }else cur=1;
+    best=Math.max(best,cur);last=k;
+  }
+  return best;
+}
+function renderWeekChart(){
+  const box=document.getElementById("weekChart"); if(!box)return;
+  box.innerHTML="";
+  const names=["आइत","सोम","मंगल","बुध","बिहि","शुक्र","शनि"];
+  const vals=[];
+  for(let i=6;i>=0;i--){const k=dateOffset(-i);vals.push({k,h:Number(tracker.days?.[k]||0),label:names[new Date(k+"T00:00:00").getDay()]});}
+  const max=Math.max(1,...vals.map(x=>x.h));
+  vals.forEach(x=>{
+    const el=document.createElement("div");el.className="day-bar";
+    el.innerHTML=`<strong>${x.h.toFixed(1)}h</strong><div class="bar" style="height:${Math.max(4,x.h/max*100)}%"></div><small>${x.label}</small>`;
+    box.appendChild(el);
+  });
+  const wt=document.getElementById("weeklyTotal");if(wt)wt.textContent=vals.reduce((a,x)=>a+x.h,0).toFixed(1)+" घण्टा";
+}
+function renderSubjects(){
+  document.querySelectorAll(".subject-progress").forEach(card=>{
+    const input=card.querySelector("input"); const val=Math.max(0,Math.min(100,Number(tracker.subjects?.[input.dataset.subject]||0)));
+    input.value=val;card.querySelector("strong").textContent=val+"%";card.querySelector("i").style.width=val+"%";
+  });
+}
+function updateMotivation(pct,streak){
+  const t=document.getElementById("motivationTitle"),p=document.getElementById("motivationText");
+  if(!t||!p)return;
+  if(pct>=100){t.textContent="🎉 आजको लक्ष्य पूरा भयो!";p.textContent="अब revision वा MCQ practice तर्फ जानुहोस्।";}
+  else if(streak>=7){t.textContent="🔥 "+streak+" दिनको streak!";p.textContent="एक हप्ता निरन्तरता — अब अझ बलियो बनाउनुहोस्।";}
+  else if(pct>0){t.textContent="💪 राम्रो सुरुवात!";p.textContent="आजको लक्ष्य पूरा गर्न अझै केही समय पढ्नुहोस्।";}
+  else{t.textContent="🚀 आजबाट सुरु गरौं!";p.textContent="पहिलो २५ मिनेटको study session बाट सुरु गर्नुहोस्।";}
+}
+
+document.getElementById("addStudyBtn")?.addEventListener("click",()=>{
+  const input=document.getElementById("studyHoursInput");const h=Number(input.value);
+  if(!Number.isFinite(h)||h<=0)return;
+  const k=todayKey();tracker.days[k]=Math.min(24,Number(tracker.days[k]||0)+h);saveTracker(tracker);input.value="";updateTrackerUI();
+});
+document.getElementById("saveGoalBtn")?.addEventListener("click",()=>{
+  const h=Number(document.getElementById("dailyGoalInput").value);if(h>0&&h<=24){tracker.goal=h;saveTracker(tracker);updateTrackerUI();}
+});
+document.querySelectorAll(".subject-progress input").forEach(input=>input.addEventListener("change",()=>{
+  tracker.subjects[input.dataset.subject]=Math.max(0,Math.min(100,Number(input.value)||0));saveTracker(tracker);updateTrackerUI();
+}));
+document.getElementById("resetTrackerBtn")?.addEventListener("click",()=>{
+  if(confirm("Study Tracker को सबै saved progress reset गर्ने?")){tracker=defaultTracker();saveTracker(tracker);updateTrackerUI();}
+});
+updateTrackerUI();
+
+/* Count quiz attempts/results in Study Tracker */
+const oldShowResult = window.showResult;
+if(typeof oldShowResult === "function"){
+  window.showResult = function(){
+    tracker=getTracker();
+    tracker.mcqAttempted=Number(tracker.mcqAttempted||0)+questions.length;
+    tracker.mcqCorrect=Number(tracker.mcqCorrect||0)+Number(score||0);
+    saveTracker(tracker);
+    oldShowResult();
+    updateTrackerUI();
+  };
+}
