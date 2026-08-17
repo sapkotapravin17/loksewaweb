@@ -16,6 +16,7 @@
     </script>
 
     <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
 
@@ -33,6 +34,7 @@
             <a href="#constitution">संविधान</a>
             <a href="#model-questions">Model</a>
             <a href="#study-tracker">Tracker</a>
+            <button id="authNavBtn" class="auth-nav-btn" type="button" onclick="openAuthModal()">👤 Login</button>
         </div>
     </nav>
 </header>
@@ -349,6 +351,49 @@
     <a href="#study-tracker"><span>📊</span><small>Tracker</small></a>
 </nav>
 
+<!-- LOGIN / SIGN UP MODAL -->
+<div id="authModal" class="auth-modal" aria-hidden="true">
+  <div class="auth-backdrop" onclick="closeAuthModal()"></div>
+  <div class="auth-panel" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <button class="auth-close" type="button" onclick="closeAuthModal()" aria-label="Close">×</button>
+    <div class="auth-brand">🇳🇵</div>
+    <span class="auth-kicker">LOK SEWA PREP NEPAL</span>
+    <h2 id="authTitle">तपाईंको तयारी सुरक्षित राख्नुहोस्</h2>
+    <p class="auth-subtitle">Login गरेपछि Study Tracker, MCQ progress र profile तपाईंको account सँग जोडिन्छ।</p>
+
+    <div id="authTabs" class="auth-tabs">
+      <button id="loginTab" class="active" type="button" onclick="showAuthMode('login')">Login</button>
+      <button id="signupTab" type="button" onclick="showAuthMode('signup')">Sign Up</button>
+    </div>
+
+    <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+      <label>Email</label>
+      <input id="loginEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+      <label>Password</label>
+      <div class="password-wrap"><input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" required><button type="button" onclick="togglePassword('loginPassword',this)">👁</button></div>
+      <button class="auth-submit" type="submit"><span>🔐</span> Login</button>
+    </form>
+
+    <form id="signupForm" class="auth-form hidden" onsubmit="handleSignup(event)">
+      <label>पूरा नाम</label>
+      <input id="signupName" type="text" autocomplete="name" placeholder="तपाईंको नाम" required>
+      <label>Email</label>
+      <input id="signupEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+      <label>Password</label>
+      <div class="password-wrap"><input id="signupPassword" type="password" autocomplete="new-password" placeholder="कम्तीमा ६ अक्षर" minlength="6" required><button type="button" onclick="togglePassword('signupPassword',this)">👁</button></div>
+      <button class="auth-submit" type="submit"><span>🚀</span> Account बनाउनुहोस्</button>
+    </form>
+
+    <div id="authMessage" class="auth-message" role="status"></div>
+    <div id="userBox" class="user-box hidden">
+      <div class="user-avatar" id="userAvatar">👤</div>
+      <div><strong id="userName">User</strong><small id="userEmail"></small></div>
+      <button type="button" onclick="handleLogout()">Logout</button>
+    </div>
+    <small class="auth-note">🔒 तपाईंको password यो website मा save हुँदैन। Authentication Supabase बाट सुरक्षित रूपमा व्यवस्थापन हुन्छ।</small>
+  </div>
+</div>
+
 <footer>
     <h3>🇳🇵 Lok Sewa Prep Nepal</h3>
     <p>Prepare Smart. Serve Nepal.</p>
@@ -357,5 +402,7 @@
 
 <script src="script.js"></script>
 <button id="backTop" class="back-top" aria-label="माथि जानुहोस्">↑</button>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
 </body>
 </html>

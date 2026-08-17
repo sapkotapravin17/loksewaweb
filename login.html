@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lok Sewa Prep Nepal Login and Sign Up">
+  <title>Login | Lok Sewa Prep Nepal</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body.auth-page{
+      min-height:100vh;
+      margin:0;
+      display:grid;
+      place-items:center;
+      padding:20px;
+      background:linear-gradient(135deg,#071952,#088395,#35A29F);
+      font-family:Arial,sans-serif;
+    }
+    .standalone-auth{
+      position:relative;
+      width:min(440px,100%);
+      background:rgba(255,255,255,.98);
+      border-radius:28px;
+      padding:28px;
+      box-shadow:0 30px 90px rgba(0,0,0,.35);
+      animation:authPop .35s ease;
+    }
+    .standalone-back{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      text-decoration:none;
+      color:#0f766e;
+      font-weight:800;
+      margin-bottom:18px;
+    }
+    .standalone-brand{
+      width:64px;height:64px;display:grid;place-items:center;
+      border-radius:20px;background:linear-gradient(135deg,#dcfce7,#ccfbf1);
+      font-size:32px;margin-bottom:12px;
+    }
+    .standalone-auth h1{margin:6px 0;color:#0f172a;font-size:28px}
+    .standalone-auth .sub{color:#64748b;line-height:1.6;font-size:14px;margin-bottom:20px}
+    @media(max-width:500px){
+      .standalone-auth{padding:22px 18px;border-radius:23px}
+      .standalone-auth h1{font-size:23px}
+    }
+  </style>
+</head>
+<body class="auth-page">
+
+  <main class="standalone-auth">
+    <a class="standalone-back" href="index.html">← Lok Sewa Prep</a>
+
+    <div class="standalone-brand">🇳🇵</div>
+    <span class="auth-kicker">LOK SEWA PREP NEPAL</span>
+    <h1 id="authTitle">तपाईंको तयारीमा Login गर्नुहोस्</h1>
+    <p class="sub">Account बनाएपछि तपाईंको profile र preparation progress सुरक्षित रूपमा जोड्न सकिन्छ।</p>
+
+    <div id="authTabs" class="auth-tabs">
+      <button id="loginTab" class="active" type="button" onclick="showAuthMode('login')">Login</button>
+      <button id="signupTab" type="button" onclick="showAuthMode('signup')">Sign Up</button>
+    </div>
+
+    <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+      <label>Email</label>
+      <input id="loginEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+
+      <label>Password</label>
+      <div class="password-wrap">
+        <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" required>
+        <button type="button" onclick="togglePassword('loginPassword',this)">👁</button>
+      </div>
+
+      <button class="auth-submit" type="submit">🔐 Login</button>
+    </form>
+
+    <form id="signupForm" class="auth-form hidden" onsubmit="handleSignup(event)">
+      <label>पूरा नाम</label>
+      <input id="signupName" type="text" autocomplete="name" placeholder="तपाईंको नाम" required>
+
+      <label>Email</label>
+      <input id="signupEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+
+      <label>Password</label>
+      <div class="password-wrap">
+        <input id="signupPassword" type="password" autocomplete="new-password" placeholder="कम्तीमा ६ अक्षर" minlength="6" required>
+        <button type="button" onclick="togglePassword('signupPassword',this)">👁</button>
+      </div>
+
+      <button class="auth-submit" type="submit">🚀 Account बनाउनुहोस्</button>
+    </form>
+
+    <div id="authMessage" class="auth-message" role="status"></div>
+    <small class="auth-note">🔒 Password यो website मा save हुँदैन। Authentication Supabase बाट व्यवस्थापन हुन्छ।</small>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+</body>
+</html>

@@ -547,3 +547,53 @@ body{
  .subject-progress-grid{grid-template-columns:1fr;gap:14px}.week-chart{height:155px;gap:5px}
  .day-bar .bar{width:24px}.day-bar small{font-size:9px}
 }
+
+
+/* =========================================================
+   SUPABASE AUTHENTICATION UI
+   ========================================================= */
+.auth-nav-btn{border:0;cursor:pointer;padding:10px 16px;border-radius:999px;background:linear-gradient(135deg,#0f766e,#16a34a);color:#fff;font-weight:800;box-shadow:0 8px 22px rgba(15,118,110,.22);transition:.25s;white-space:nowrap}
+.auth-nav-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(15,118,110,.32)}
+.auth-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:18px}
+.auth-modal.open{display:flex;animation:authFade .25s ease}
+.auth-backdrop{position:absolute;inset:0;background:rgba(2,8,23,.68);backdrop-filter:blur(8px)}
+.auth-panel{position:relative;width:min(440px,100%);max-height:92vh;overflow:auto;background:rgba(255,255,255,.98);border:1px solid rgba(255,255,255,.7);border-radius:28px;padding:28px;box-shadow:0 30px 90px rgba(0,0,0,.35);animation:authPop .3s ease}
+.auth-close{position:absolute;right:14px;top:12px;width:38px;height:38px;border:0;border-radius:50%;background:#f1f5f9;font-size:25px;cursor:pointer;color:#334155}
+.auth-brand{width:60px;height:60px;display:grid;place-items:center;border-radius:20px;background:linear-gradient(135deg,#dcfce7,#ccfbf1);font-size:31px;margin-bottom:12px}
+.auth-kicker{font-size:11px;font-weight:900;letter-spacing:1.4px;color:#0f766e}
+.auth-panel h2{font-size:25px;margin:7px 0;color:#0f172a}
+.auth-subtitle{font-size:13px;line-height:1.6;color:#64748b;margin:0 0 18px}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;background:#f1f5f9;padding:5px;border-radius:13px;margin-bottom:18px}
+.auth-tabs button{border:0;background:transparent;padding:11px;border-radius:9px;font-weight:800;color:#64748b;cursor:pointer}
+.auth-tabs button.active{background:#fff;color:#0f766e;box-shadow:0 2px 8px rgba(15,23,42,.08)}
+.auth-form{display:flex;flex-direction:column;gap:8px}
+.auth-form label{font-size:13px;font-weight:800;color:#334155;margin-top:3px}
+.auth-form input{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:12px;padding:12px 13px;font-size:14px;outline:none;background:#fff;transition:.2s}
+.auth-form input:focus{border-color:#0f766e;box-shadow:0 0 0 4px rgba(15,118,110,.1)}
+.password-wrap{position:relative}
+.password-wrap input{padding-right:48px}
+.password-wrap button{position:absolute;right:6px;top:5px;border:0;background:#f8fafc;border-radius:9px;padding:8px;cursor:pointer}
+.auth-submit{margin-top:9px;border:0;border-radius:13px;padding:13px;background:linear-gradient(135deg,#0f766e,#16a34a);color:#fff;font-weight:900;font-size:15px;cursor:pointer;box-shadow:0 10px 22px rgba(15,118,110,.22);transition:.2s}
+.auth-submit:hover{transform:translateY(-1px)}
+.auth-submit:disabled{opacity:.65;cursor:wait}
+.auth-message{display:none;margin-top:13px;padding:10px 12px;border-radius:11px;font-size:13px;line-height:1.5}
+.auth-message.show{display:block}
+.auth-message.success{background:#ecfdf5;color:#047857}
+.auth-message.error{background:#fef2f2;color:#b91c1c}
+.auth-message.info{background:#eff6ff;color:#1d4ed8}
+.user-box{display:flex;align-items:center;gap:10px;padding:13px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:15px;margin-top:15px}
+.user-avatar{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:#dcfce7;font-size:20px}
+.user-box div:nth-child(2){min-width:0;flex:1}
+.user-box strong,.user-box small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-box small{color:#64748b;margin-top:2px}
+.user-box>button{border:0;background:#fee2e2;color:#b91c1c;padding:8px 10px;border-radius:9px;font-weight:800;cursor:pointer}
+.auth-note{display:block;color:#94a3b8;text-align:center;margin-top:17px;line-height:1.5}
+.hidden{display:none!important}
+@keyframes authFade{from{opacity:0}to{opacity:1}}
+@keyframes authPop{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+@media(max-width:700px){
+  .auth-nav-btn{padding:8px 11px;font-size:12px}
+  .auth-panel{padding:23px 18px;border-radius:23px;max-height:94vh}
+  .auth-panel h2{font-size:21px}
+  .auth-modal{padding:10px}
+}
