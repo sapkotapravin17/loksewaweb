@@ -35,6 +35,7 @@
             <a href="#model-questions">Model</a>
             <a href="#study-tracker">Tracker</a>
             <button id="authNavBtn" class="auth-nav-btn" type="button" onclick="openAuthModal()">👤 Login</button>
+            <a id="adminNavLink" class="admin-nav-link hidden" href="admin.html">🛡️ Admin</a>
         </div>
     </nav>
 </header>
@@ -58,6 +59,23 @@
     <div class="feature-card"><div class="icon">⏱️</div><h3>Mock Tests</h3><p>Test your preparation with timed exams.</p></div>
     <div class="feature-card"><div class="icon">📰</div><h3>Current Affairs</h3><p>Stay updated with important events.</p></div>
     <div class="feature-card"><div class="icon">📚</div><h3>Study Materials</h3><p>Access useful preparation materials.</p></div>
+</section>
+
+
+<section id="premium" class="premium-section">
+  <div class="premium-wrap">
+    <div class="premium-badge">👑 PREMIUM PREPARATION</div>
+    <h2>Go Beyond Basic Preparation</h2>
+    <p>Premium members can unlock advanced mock tests, premium question sets, detailed progress and exclusive study resources.</p>
+    <div class="premium-grid">
+      <div class="premium-card"><span>🎯</span><h3>Premium Mock Tests</h3><p>Practice advanced exam-style tests.</p></div>
+      <div class="premium-card"><span>📚</span><h3>Exclusive Questions</h3><p>Unlock premium MCQ and model-question collections.</p></div>
+      <div class="premium-card"><span>📈</span><h3>Detailed Progress</h3><p>Track your preparation and performance.</p></div>
+      <div class="premium-card"><span>🏆</span><h3>Premium Resources</h3><p>Get access to members-only preparation material.</p></div>
+    </div>
+    <div id="premiumStatus" class="premium-status">Checking your membership...</div>
+    <button id="premiumLoginBtn" class="premium-cta" type="button" onclick="openAuthModal()">👤 Login to check Premium</button>
+  </div>
 </section>
 
 <section id="subjects" class="section">

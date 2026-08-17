@@ -299,3 +299,82 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.key === "Escape") closeAuthModal();
   });
 });
+
+
+/* ===== PREMIUM / ADMIN ACCESS ===== */
+async function getMyProfile() {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  if (!user) return { user: null, profile: null };
+  const { data: profile, error } = await supabaseClient
+    .from("profiles")
+    .select("id,full_name,email,is_premium,premium_until,is_admin")
+    .eq("id", user.id)
+    .maybeSingle();
+  return { user, profile, error };
+}
+
+function premiumIsActive(profile) {
+  if (!profile?.is_premium) return false;
+  if (!profile.premium_until) return true;
+  return new Date(profile.premium_until).getTime() > Date.now();
+}
+
+function updatePremiumUI(profile) {
+  const status = $("premiumStatus");
+  const cta = $("premiumLoginBtn");
+  if (!status) return;
+
+  if (!profile) {
+    status.className = "premium-status";
+    status.textContent = "🔒 Login to see whether your account has Premium access.";
+    if (cta) cta.textContent = "👤 Login to check Premium";
+    return;
+  }
+
+  if (premiumIsActive(profile)) {
+    status.className = "premium-status active";
+    const until = profile.premium_until
+      ? new Date(profile.premium_until).toLocaleDateString("en-GB")
+      : "Lifetime";
+    status.textContent = "👑 Premium Active • Valid until " + until;
+    if (cta) {
+      cta.textContent = "👑 Premium Active";
+      cta.disabled = true;
+    }
+  } else if (profile.is_premium) {
+    status.className = "premium-status expired";
+    status.textContent = "⚠️ Your Premium access has expired.";
+    if (cta) {
+      cta.disabled = false;
+      cta.textContent = "👑 Renew Premium";
+    }
+  } else {
+    status.className = "premium-status";
+    status.textContent = "⭐ Free account • Premium access is not active.";
+    if (cta) {
+      cta.disabled = false;
+      cta.textContent = "👑 View Premium Options";
+    }
+  }
+}
+
+async function refreshPremiumAndAdminUI() {
+  const { user, profile } = await getMyProfile();
+  updatePremiumUI(profile);
+
+  const adminLink = $("adminNavLink");
+  if (adminLink) {
+    adminLink.classList.toggle("hidden", !(profile?.is_admin === true));
+  }
+
+  return { user, profile };
+}
+
+/* Re-run after the original auth UI finishes loading. */
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(refreshPremiumAndAdminUI, 150);
+});
+
+supabaseClient.auth.onAuthStateChange(() => {
+  setTimeout(refreshPremiumAndAdminUI, 100);
+});

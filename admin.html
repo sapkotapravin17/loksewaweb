@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | Lok Sewa Prep Nepal</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body.admin-page{margin:0;background:#f8fafc;color:#0f172a;font-family:Arial,sans-serif}
+.admin-wrap{max-width:1200px;margin:auto;padding:25px 16px 60px}
+.admin-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:24px}
+.admin-head h1{margin:0;font-size:28px}
+.admin-head p{margin:6px 0 0;color:#64748b}
+.admin-actions{display:flex;gap:8px;flex-wrap:wrap}
+.admin-btn{border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;background:#0f766e;color:#fff}
+.admin-btn.secondary{background:#e2e8f0;color:#334155}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.stat{background:#fff;border:1px solid #e2e8f0;border-radius:17px;padding:18px;box-shadow:0 7px 20px rgba(15,23,42,.05)}
+.stat span{font-size:25px}.stat strong{display:block;font-size:26px;margin-top:8px}.stat small{color:#64748b}
+.admin-card{background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:18px;box-shadow:0 7px 20px rgba(15,23,42,.05);overflow:hidden}
+.toolbar{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-bottom:15px;flex-wrap:wrap}
+.toolbar input{border:1px solid #cbd5e1;border-radius:10px;padding:11px 12px;min-width:240px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{text-align:left;padding:13px 10px;border-bottom:1px solid #eef2f7;font-size:13px}
+th{color:#64748b;background:#f8fafc}
+.status{display:inline-flex;padding:5px 9px;border-radius:999px;font-weight:900;font-size:11px}
+.status.premium{background:#fef3c7;color:#92400e}.status.free{background:#f1f5f9;color:#475569}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap}
+.row-actions button{border:0;border-radius:8px;padding:7px 9px;font-weight:800;cursor:pointer}
+.make{background:#dcfce7;color:#166534}.remove{background:#fee2e2;color:#991b1b}
+#adminMessage{margin-bottom:15px;padding:11px 13px;border-radius:10px;display:none}
+#adminMessage.show{display:block}#adminMessage.ok{background:#ecfdf5;color:#047857}#adminMessage.err{background:#fef2f2;color:#b91c1c}
+@media(max-width:800px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.admin-head{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr 1fr}.stat strong{font-size:22px}.toolbar input{min-width:100%;width:100%}}
+</style>
+</head>
+<body class="admin-page">
+<div class="admin-wrap">
+  <div class="admin-head">
+    <div>
+      <h1>🛡️ Admin Dashboard</h1>
+      <p>Lok Sewa Prep Nepal — users & Premium management</p>
+    </div>
+    <div class="admin-actions">
+      <a class="admin-btn secondary" href="index.html" style="text-decoration:none">← Website</a>
+      <button class="admin-btn" onclick="loadUsers()">↻ Refresh</button>
+      <button class="admin-btn secondary" onclick="handleLogout()">Logout</button>
+    </div>
+  </div>
+
+  <div id="adminMessage"></div>
+
+  <div id="stats" class="stats">
+    <div class="stat"><span>👥</span><strong id="totalUsers">—</strong><small>Total users</small></div>
+    <div class="stat"><span>👑</span><strong id="premiumUsers">—</strong><small>Premium users</small></div>
+    <div class="stat"><span>🆓</span><strong id="freeUsers">—</strong><small>Free users</small></div>
+    <div class="stat"><span>🛡️</span><strong id="adminUsers">—</strong><small>Admins</small></div>
+  </div>
+
+  <div class="admin-card">
+    <div class="toolbar">
+      <h2 style="margin:0">Users</h2>
+      <input id="searchUsers" type="search" placeholder="Search name or email..." oninput="renderUsers()">
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th><th>Email</th><th>Joined</th><th>Status</th><th>Premium Until</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersBody">
+          <tr><td colspan="6">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
+<script>
+let users = [];
+
+function adminMessage(text, ok=true){
+  const el=document.getElementById("adminMessage");
+  el.textContent=text;
+  el.className="show "+(ok?"ok":"err");
+  setTimeout(()=>el.className="",4000);
+}
+
+function activePremium(u){
+  return !!u.is_premium && (!u.premium_until || new Date(u.premium_until).getTime()>Date.now());
+}
+
+async function ensureAdmin(){
+  const {data:{user}}=await supabaseClient.auth.getUser();
+  if(!user){
+    location.href="login.html";
+    return false;
+  }
+  const {data:profile,error}=await supabaseClient.from("profiles")
+    .select("is_admin").eq("id",user.id).maybeSingle();
+  if(error || !profile?.is_admin){
+    document.querySelector(".admin-wrap").innerHTML =
+      '<div class="admin-card"><h2>⛔ Admin access required</h2><p>Your account is not an administrator.</p><a class="admin-btn" href="index.html">Back to website</a></div>';
+    return false;
+  }
+  return true;
+}
+
+async function loadUsers(){
+  if(!(await ensureAdmin())) return;
+  const {data,error}=await supabaseClient.from("profiles")
+    .select("id,full_name,email,created_at,is_premium,premium_until,is_admin")
+    .order("created_at",{ascending:false});
+  if(error){
+    adminMessage(error.message,false);
+    return;
+  }
+  users=data||[];
+  renderStats();
+  renderUsers();
+}
+
+function renderStats(){
+  const premium=users.filter(activePremium).length;
+  document.getElementById("totalUsers").textContent=users.length;
+  document.getElementById("premiumUsers").textContent=premium;
+  document.getElementById("freeUsers").textContent=users.length-premium;
+  document.getElementById("adminUsers").textContent=users.filter(u=>u.is_admin).length;
+}
+
+function renderUsers(){
+  const q=(document.getElementById("searchUsers").value||"").toLowerCase();
+  const list=users.filter(u=>
+    (u.full_name||"").toLowerCase().includes(q) ||
+    (u.email||"").toLowerCase().includes(q)
+  );
+  const body=document.getElementById("usersBody");
+  if(!list.length){
+    body.innerHTML='<tr><td colspan="6">No users found.</td></tr>';
+    return;
+  }
+  body.innerHTML=list.map(u=>{
+    const premium=activePremium(u);
+    const joined=u.created_at?new Date(u.created_at).toLocaleDateString("en-GB"):"—";
+    const until=u.premium_until?new Date(u.premium_until).toLocaleDateString("en-GB"):"Lifetime";
+    return `<tr>
+      <td><strong>${escapeHtml(u.full_name||"Unnamed")}</strong>${u.is_admin?'<div style="font-size:11px;color:#2563eb">🛡️ Admin</div>':''}</td>
+      <td>${escapeHtml(u.email||"")}</td>
+      <td>${joined}</td>
+      <td><span class="status ${premium?"premium":"free"}">${premium?"👑 Premium":"🆓 Free"}</span></td>
+      <td>${premium?until:(u.is_premium?"Expired":"—")}</td>
+      <td><div class="row-actions">
+        <button class="make" onclick="setPremium('${u.id}',30)">+30 days</button>
+        <button class="make" onclick="setPremium('${u.id}',365)">+1 year</button>
+        <button class="make" onclick="setPremium('${u.id}',null)">Lifetime</button>
+        <button class="remove" onclick="removePremium('${u.id}')">Remove</button>
+      </div></td>
+    </tr>`;
+  }).join("");
+}
+
+function escapeHtml(v){
+  return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+}
+
+async function setPremium(id,days){
+  let until=null;
+  if(days!==null){
+    until=new Date(Date.now()+days*86400000).toISOString();
+  }
+  const {error}=await supabaseClient.from("profiles")
+    .update({is_premium:true,premium_until:until}).eq("id",id);
+  if(error){adminMessage(error.message,false);return;}
+  adminMessage(days===null?"Lifetime Premium enabled.":"Premium enabled.");
+  await loadUsers();
+}
+
+async function removePremium(id){
+  if(!confirm("Remove Premium from this user?")) return;
+  const {error}=await supabaseClient.from("profiles")
+    .update({is_premium:false,premium_until:null}).eq("id",id);
+  if(error){adminMessage(error.message,false);return;}
+  adminMessage("Premium removed.");
+  await loadUsers();
+}
+
+document.addEventListener("DOMContentLoaded",loadUsers);
+</script>
+</body>
+</html>
